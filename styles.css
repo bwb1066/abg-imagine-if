@@ -570,11 +570,16 @@ html, body {
 }
 .index-hero h1 {
   font-family: var(--font-headline);
-  font-size: 48px; font-weight: 700;
-  margin: 0 0 14px; line-height: 1.05;
-  letter-spacing: -0.5px;
+  font-size: 32px; font-weight: 700;
+  margin: 0 0 16px; line-height: 1.2;
+  letter-spacing: -0.3px;
+  max-width: 920px;
 }
-.index-hero h1 .accent { opacity: 0.55; font-weight: 400; }
+.index-hero h1 .accent {
+  opacity: 0.45;
+  font-weight: 400;
+  margin: 0 6px;
+}
 .index-hero p {
   font-size: 16px; max-width: 620px; margin: 0; opacity: 0.94;
   line-height: 1.55;
@@ -732,7 +737,8 @@ html, body {
   /* ---- Index page ---- */
   .index-hero { padding: 36px 20px; }
   .index-tagline { font-size: 11px; letter-spacing: 2.5px; margin-bottom: 12px; }
-  .index-hero h1 { font-size: 30px; line-height: 1.1; }
+  .index-hero h1 { font-size: 22px; line-height: 1.25; }
+  .index-hero h1 .accent { display: block; margin: 6px 0; }
   .index-hero p { font-size: 14px; }
   .index-grid { padding: 0 16px 40px; gap: 28px; margin: 24px auto; }
   .index-section h2 { font-size: 18px; }
