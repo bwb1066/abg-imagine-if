@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MILE — 1B · Conversation refines</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="mockup-stage">
+    <p class="mockup-caption"><strong>1B</strong> — MILE keeps the conversation going. Refine, compare alternatives, ask the why — without losing the trip context.</p>
+
+    <div class="avis-mock">
+      <div class="avis-topnav">
+        <div class="avis-logo">AVIS</div>
+        <div class="avis-nav">
+          <span class="active">Book</span>
+          <span>Manage Booking</span>
+          <span>Business Rentals</span>
+          <span>Avis Preferred</span>
+          <span>Deals</span>
+        </div>
+        <div class="avis-account">EN<span class="sep">·</span>Sign in or Join</div>
+      </div>
+      <div class="avis-band">
+        <h1>Book your car rental</h1>
+        <div class="sub">Find rental cars, SUVs and premium vehicles at over 1,900 U.S. locations.</div>
+        <div class="mile-input">
+          <span class="pin">+</span>
+          <span>Family ski trip to Lake Tahoe Dec 19–26, two adults and two kids</span>
+          <span class="meta">SFO · Dec 19, 9:00 AM</span>
+        </div>
+      </div>
+      <div style="padding:28px 32px; max-width: 800px;">
+        <div class="bubble-user">Can we do something cheaper?</div>
+
+        <div class="bubble-mile">
+          <div class="mile-tag" style="margin-bottom:8px;">MILE</div>
+          Two ways to bring it down:
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:14px;">
+            <div style="border:1px solid var(--border); border-radius:6px; padding:12px; background:#fff;">
+              <div style="font-weight:700; font-size:14px;">Subaru Outback</div>
+              <div style="font-size:12px; color:var(--text-muted); margin:3px 0 8px;">AWD Wagon · still 4WD-capable, fits 4 ski bags</div>
+              <div style="font-family:var(--font-headline); font-size:22px; font-weight:700;">$504 total</div>
+              <div style="font-size:12px; color:var(--success);">Save $105 vs Cherokee</div>
+            </div>
+            <div style="border:1px solid var(--border); border-radius:6px; padding:12px; background:#fff;">
+              <div style="font-weight:700; font-size:14px;">Toyota Camry + chains</div>
+              <div style="font-size:12px; color:var(--text-muted); margin:3px 0 8px;">FWD sedan · I-80 chains required, no roof rack</div>
+              <div style="font-family:var(--font-headline); font-size:22px; font-weight:700;">$337 total</div>
+              <div style="font-size:12px; color:var(--text-muted);">Save $272 — but tight on cargo</div>
+            </div>
+          </div>
+          <div style="margin-top:14px; font-size:13px; color:var(--text-muted);">
+            With four people, four ski bags, and snow on the route, my honest read: stretch to the Outback. The Camry math saves money on paper, but you'll be loading skis on the roof and chaining up a sedan in a snowstorm.
+          </div>
+          <div style="display:flex; gap:8px; margin-top:14px;">
+            <button class="btn-primary">Switch to Outback</button>
+            <button class="btn-secondary">Keep the Cherokee</button>
+          </div>
+        </div>
+
+        <div class="bubble-user">What if we had an EV?</div>
+
+        <div class="bubble-mile">
+          <div class="mile-tag" style="margin-bottom:8px;">MILE</div>
+          Possible, with a caveat. The Tesla Model Y AWD is available — $94/day, $658 total. Adds ~45 min charging at the Truckee Supercharger on the way up, but saves ~$140 in gas and runs warmer cabin in snow. Let me know if you want to see it side-by-side with the Cherokee.
+          <div style="display:flex; gap:8px; margin-top:12px;">
+            <button class="btn-secondary">Compare with Cherokee</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="editor.js"></script>
+</body>
+</html>
