@@ -7,7 +7,12 @@
    ============================================================ */
 
 (function () {
-  const STORAGE_KEY = 'mile-mockup:' + location.pathname.split('/').pop();
+  // Bumping STORAGE_VERSION invalidates any cached state from older builds. This prevents
+  // the situation where stale localStorage from a previous version of the HTML overwrites
+  // newly-shipped structural changes (e.g. when img-swap classes were added to placeholder
+  // tiles, old caches kept the previous structure and edit affordances disappeared).
+  const STORAGE_VERSION = 'v3';
+  const STORAGE_KEY = 'mile-mockup:' + STORAGE_VERSION + ':' + location.pathname.split('/').pop();
   let edited = false;
   let initialized = false;
 
@@ -15,28 +20,68 @@
     return location.hash === '#edit' || location.search.indexOf('edit=1') !== -1;
   }
 
+  function structuralFingerprint(root) {
+    // A minimal signature of the page's structural skeleton. If this differs between
+    // a saved state and the current HTML, the saved state was made against a different
+    // build of the page and applying it would silently overwrite new structural changes
+    // (e.g. img-swap classes, new sections). We use it as a sanity check before restore.
+    if (!root) return '';
+    return [
+      root.querySelectorAll('.img-swap').length,
+      root.querySelectorAll('.veh-card').length,
+      root.querySelectorAll('.thing-card').length,
+      root.querySelectorAll('.badge-card').length,
+      root.querySelectorAll('button').length,
+      root.querySelectorAll('h1,h2,h3,h4').length
+    ].join('-');
+  }
+
   function saveState() {
     const stage = document.querySelector('.mockup-stage');
     if (!stage) return;
-    try { localStorage.setItem(STORAGE_KEY, stage.innerHTML); } catch (e) {}
+    try {
+      const payload = JSON.stringify({
+        fp: structuralFingerprint(stage),
+        html: stage.innerHTML
+      });
+      localStorage.setItem(STORAGE_KEY, payload);
+    } catch (e) {}
   }
 
   function restoreState() {
     const stage = document.querySelector('.mockup-stage');
     if (!stage) return;
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) stage.innerHTML = saved;
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      // Backwards-compat: old saves were raw HTML strings, not JSON. Treat those as stale.
+      if (raw[0] !== '{') {
+        localStorage.removeItem(STORAGE_KEY);
+        return;
+      }
+      const data = JSON.parse(raw);
+      const currentFp = structuralFingerprint(stage);
+      if (data.fp !== currentFp) {
+        // Saved state was made against a different page structure — ignore it. The user's
+        // old edits aren't lost (they're still in localStorage), but applying them would
+        // hide newly-shipped content. Bumping STORAGE_VERSION clears these eventually.
+        console.warn('MILE editor: skipping restore — saved state predates a page update.');
+        return;
+      }
+      stage.innerHTML = data.html;
     } catch (e) {}
   }
 
   function stripEditAttributes(root) {
     if (!root) return;
+    // Only strip true edit artifacts. Do NOT remove the .img-swap class — that's part of
+    // the page's source markup, and removing it makes recovery impossible if the user enters
+    // edit mode without a full page reload (e.g. adds #edit to the URL on an already-open
+    // page, where the browser fires hashchange but doesn't refetch the HTML).
     root.querySelectorAll('[contenteditable]').forEach(el => {
       el.removeAttribute('contenteditable');
       el.removeAttribute('spellcheck');
     });
-    root.querySelectorAll('.img-swap').forEach(el => el.classList.remove('img-swap'));
   }
 
   function applyEditable() {
@@ -137,6 +182,7 @@
   function enableEditMode() {
     if (edited) return;
     edited = true;
+    restoreState();  // surface saved edits when actually entering edit mode
     document.body.classList.add('edit-mode');
     injectToolbar();
     applyEditable();
@@ -191,8 +237,10 @@
   function init() {
     if (initialized) return;
     initialized = true;
-    restoreState();
+    // Only restore saved edits when entering edit mode. Auto-restoring on every page load
+    // is a footgun: stale cache silently replaces new content for view-only visitors.
     if (isEditUrl()) {
+      restoreState();
       enableEditMode();
     } else {
       stripEditAttributes(document.querySelector('.mockup-stage'));
