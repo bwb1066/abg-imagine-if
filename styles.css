@@ -305,6 +305,30 @@ html, body {
 }
 .bundle-bar strong { font-weight: 700; }
 
+/* Ask Miles eyebrow above the conversational input */
+.ask-miles {
+  font-family: var(--font-headline);
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  color: #fff; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 8px;
+  margin: 0 auto 10px;
+  opacity: 0.92;
+}
+.ask-miles::before {
+  content: ""; width: 14px; height: 14px; border-radius: 50%;
+  background: #fff;
+  background-image: radial-gradient(circle, var(--avis-red-band) 25%, #fff 28%);
+  flex-shrink: 0;
+}
+
+/* Miles ahead. tagline */
+.miles-ahead {
+  font-family: var(--font-headline); font-weight: 700;
+  font-size: 13px; letter-spacing: 0.5px;
+  color: #fff; opacity: 0.7;
+  margin-top: 16px;
+}
+
 /* Generic buttons */
 .btn-primary {
   background: var(--avis-red); color: #fff;
@@ -538,13 +562,19 @@ html, body {
   color: #fff;
   padding: 64px 40px;
 }
+.index-tagline {
+  font-family: var(--font-headline);
+  font-size: 14px; font-weight: 700;
+  letter-spacing: 4px; text-transform: uppercase;
+  opacity: 0.7; margin-bottom: 18px;
+}
 .index-hero h1 {
   font-family: var(--font-headline);
-  font-size: 44px; font-weight: 700;
-  margin: 0 0 12px; line-height: 1.1;
-  text-transform: uppercase; letter-spacing: 0.5px;
+  font-size: 48px; font-weight: 700;
+  margin: 0 0 14px; line-height: 1.05;
+  letter-spacing: -0.5px;
 }
-.index-hero h1 .accent { opacity: 0.6; }
+.index-hero h1 .accent { opacity: 0.55; font-weight: 400; }
 .index-hero p {
   font-size: 16px; max-width: 620px; margin: 0; opacity: 0.94;
   line-height: 1.55;
@@ -580,10 +610,146 @@ html, body {
 .index-card .desc { font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.5; }
 
 @media (max-width: 760px) {
-  .index-pair { grid-template-columns: 1fr; }
-  .index-hero { padding: 40px 24px; }
-  .index-hero h1 { font-size: 30px; }
-  .veh-grid, .thing-grid, .badges-row, .stat-grid { grid-template-columns: 1fr; }
+  /* ---- Stage / chrome ---- */
+  .mockup-stage { padding: 0 12px 48px; margin: 12px auto; }
+  .mockup-caption { font-size: 12px; line-height: 1.5; }
+  .avis-mock { border-radius: 6px; }
+
+  /* ---- Topnav: nav items don't fit; hide them on phones, keep logo + account ---- */
+  .avis-topnav { padding: 12px 14px; gap: 10px; }
+  .avis-nav { display: none; }
+  .avis-logo { font-size: 18px; }
+  .avis-logo img { height: 18px; }
+  .avis-account { font-size: 12px; margin-left: auto; }
+
+  /* ---- Subnav ---- */
+  .avis-subnav { padding: 8px 14px; font-size: 11px; line-height: 1.6; }
+  .avis-subnav .sep { margin: 0 5px; }
+
+  /* ---- Booking band ---- */
+  .avis-band { padding: 24px 16px 22px; }
+  .avis-band h1 { font-size: 22px; line-height: 1.15; }
+  .avis-band .sub { font-size: 12px; margin-bottom: 14px; max-width: none; }
+  .ask-miles { font-size: 10px; letter-spacing: 1.5px; margin-bottom: 8px; }
+  .miles-ahead { font-size: 11px; margin-top: 12px; }
+
+  /* ---- Conversational input: stack the meta below the query ---- */
+  .mile-input { flex-wrap: wrap; padding: 10px 14px; font-size: 13px; gap: 8px; }
+  .mile-input .meta { margin-left: 28px; flex-basis: 100%; font-size: 11px; }
+
+  /* ---- Force ALL grids (class-based AND inline-styled) to single column ----
+     The double-class scoping bumps specificity high enough to beat inline styles
+     across different browser cascade-resolution edge cases observed on file:// URLs. */
+  .avis-mock [style*="grid-template-columns"],
+  .avis-mock div[style*="grid-template-columns"],
+  body .avis-mock [style*="grid-template-columns"],
+  .index-grid [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  /* And clear any inline grid-column spans that would create implicit columns */
+  .avis-mock [style*="grid-column: span"],
+  .avis-mock [style*="grid-column:span"] {
+    grid-column: 1 / -1 !important;
+  }
+  .veh-grid, .thing-grid, .badges-row, .stat-grid, .index-pair {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Stat grid: keep 2-up on phones, it reads better than 4 stacked tiles */
+  .stat-grid { grid-template-columns: 1fr 1fr !important; }
+  .stat-tile { padding: 12px; }
+  .stat-tile .num { font-size: 22px; }
+  .stat-tile .label { font-size: 10px; }
+
+  /* Badges row: 2-up on phones */
+  .badges-row { grid-template-columns: 1fr 1fr !important; gap: 10px; }
+  .badge-card { padding: 12px; }
+  .badge-card .glyph { width: 44px; height: 44px; font-size: 18px; }
+
+  /* ---- Inner section paddings ---- */
+  .avis-mock [style*="padding:32px"],
+  .avis-mock [style*="padding: 32px"],
+  .avis-mock [style*="padding:24px 32px"],
+  .avis-mock [style*="padding: 24px 32px"],
+  .avis-mock [style*="padding:28px 32px"],
+  .avis-mock [style*="padding: 28px 32px"],
+  .avis-mock [style*="padding:36px 32px"],
+  .avis-mock [style*="padding: 36px 32px"] {
+    padding: 18px 14px !important;
+  }
+
+  /* Headline H2/H3 reductions for the prominent display headlines */
+  .avis-mock h2[style*="font-size:32px"] { font-size: 22px !important; }
+  .avis-mock h2[style*="font-size:28px"] { font-size: 20px !important; }
+  .avis-mock h2[style*="font-size:26px"] { font-size: 19px !important; }
+  .avis-mock h3[style*="font-size:22px"],
+  .avis-mock h3[style*="font-size:20px"] { font-size: 17px !important; }
+
+  /* Big prices/stats inside cards */
+  .avis-mock [style*="font-size:42px"] { font-size: 28px !important; }
+  .avis-mock [style*="font-size:32px"]:not(h2) { font-size: 24px !important; }
+  .avis-mock [style*="font-size:28px"]:not(h2) { font-size: 22px !important; }
+
+  /* ---- Vehicle and thing cards ---- */
+  .veh-img, .thing-img { aspect-ratio: 16/9; }
+  .veh-card .badge { font-size: 10px; padding: 3px 8px; }
+  .veh-body { padding: 12px; }
+  .veh-body h3 { font-size: 16px; }
+  .veh-footer { padding: 0 12px 12px; flex-direction: column; align-items: stretch; gap: 10px; }
+  .veh-footer .btn-reserve { width: 100%; padding: 10px; }
+  .veh-price .amount { font-size: 22px; }
+
+  /* ---- Bundle / route / try rows ---- */
+  .bundle-bar { padding: 11px 13px; font-size: 12px; line-height: 1.5; }
+  .route-bar { padding: 12px; font-size: 12px; gap: 8px; }
+  .route-bar .leg { font-size: 13px; }
+  .route-bar .alert { margin-left: 0; flex-basis: 100%; font-size: 11px; }
+  .try-row { padding: 12px; gap: 6px; flex-wrap: wrap; }
+  .try-row > span { flex-basis: 100%; }
+  .chip { font-size: 12px; padding: 6px 11px; }
+
+  /* ---- Bubbles ---- */
+  .bubble-user, .bubble-mile { max-width: 100%; font-size: 13px; }
+
+  /* ---- Buttons ---- */
+  .btn-primary, .btn-secondary { width: 100%; padding: 11px 16px; font-size: 13px; }
+  /* Override inline button styles when they're meant to be wide */
+  .avis-mock .btn-primary[style*="font-size:15px"],
+  .avis-mock .btn-primary[style*="padding:14px"] { font-size: 14px !important; padding: 11px !important; }
+
+  /* ---- Phone-frame mockups: keep the device chrome but center properly ---- */
+  .phone-frame { width: 100%; max-width: 340px; }
+  .phone-screen { min-height: 600px; }
+
+  /* ---- Editor toolbar: compact on mobile ---- */
+  .editor-bar { padding: 8px 12px; gap: 6px; font-size: 12px; flex-wrap: wrap; }
+  .editor-bar .title { font-size: 12px; flex: 1 1 60%; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .editor-bar .hint { display: none; }
+  .editor-bar button { padding: 5px 10px; font-size: 11px; }
+  .editor-bar a.back { font-size: 12px; }
+
+  /* ---- Index page ---- */
+  .index-hero { padding: 36px 20px; }
+  .index-tagline { font-size: 11px; letter-spacing: 2.5px; margin-bottom: 12px; }
+  .index-hero h1 { font-size: 30px; line-height: 1.1; }
+  .index-hero p { font-size: 14px; }
+  .index-grid { padding: 0 16px 40px; gap: 28px; margin: 24px auto; }
+  .index-section h2 { font-size: 18px; }
+  .index-section .lede { font-size: 13px; margin-bottom: 14px; }
+  .index-card { padding: 14px; }
+  .index-card .name { font-size: 15px; }
+  .index-card .desc { font-size: 12px; }
+}
+
+@media (max-width: 420px) {
+  /* Tighter still for small phones */
+  .avis-band h1 { font-size: 20px; }
+  .mockup-stage { padding: 0 8px 32px; }
+  .mile-input { font-size: 12px; padding: 9px 12px; }
+  .mile-input .meta { font-size: 10px; }
+  .avis-account { font-size: 11px; }
+  .index-hero h1 { font-size: 26px; }
 }
 
 /* ---------- Edit-mode affordances ---------- */
